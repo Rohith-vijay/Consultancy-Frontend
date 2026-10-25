@@ -9,6 +9,7 @@ import ErrorBoundary from "../../components/ErrorBoundary";
 import { UserDashboardOverviewSkeleton } from "../../components/SkeletonLoader";
 import { stripHtml, updatePageSEO } from "../../utils";
 import SecurityPanel from "../../components/SecurityPanel";
+import IssuedCertificates from "../../components/IssuedCertificates";
 
 import {
   Dialog,
@@ -367,6 +368,7 @@ const UserDashboard = () => {
     { id: "overview", label: "Overview", icon: "🏛️" },
     { id: "history", label: "Donations & Receipts", icon: "📋" },
     { id: "tax", label: "Donation Receipts", icon: "📜" },
+    { id: "certificates", label: "Certificates", icon: "🏅" },
     { id: "security", label: "Security", icon: "🔒" },
   ];
 
@@ -539,7 +541,7 @@ const UserDashboard = () => {
                       <div className="mt-4 pt-4 border-t border-slate-200/50 flex items-center justify-between">
                         <span className="text-[11px] text-slate-500 font-semibold">Tier Benefits:</span>
                         <span className="text-[10px] bg-slate-200/70 px-2 py-0.5 rounded text-slate-600 font-bold">
-                          Annual Reports & Certificates
+                          Annual Reports & Receipts
                         </span>
                       </div>
                     </motion.div>
@@ -982,7 +984,7 @@ const UserDashboard = () => {
                   <div className="bg-white rounded-3xl border border-slate-100 p-16 text-center shadow-sm">
 
                     <WorkspacePremiumIcon sx={{ fontSize: 64, color: "#e2e8f0", mb: 2 }} />
-                    <h3 className="text-lg font-bold text-slate-700">No certificates yet</h3>
+                    <h3 className="text-lg font-bold text-slate-700">No receipts yet</h3>
                     <p className="text-slate-400 text-xs mt-2 max-w-sm mx-auto">
                       Make a successful donation to view your receipt.
                     </p>
@@ -1162,6 +1164,11 @@ const UserDashboard = () => {
               </motion.div>
             )}
 
+            {activeTab === "certificates" && (
+              <motion.div key="certificates" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                <IssuedCertificates />
+              </motion.div>
+            )}
             {activeTab === "security" && (
               <motion.div
                 key="security"
@@ -1300,7 +1307,7 @@ const UserDashboard = () => {
               onClick={() => handleDownloadReceipt(selectedReceipt?.id)}
               sx={{ py: 1.2, borderRadius: 3, fontWeight: 700, textTransform: "none" }}
             >
-              {downloadingId === selectedReceipt?.id ? "Generating PDF..." : "Download PDF Certificate"}
+              {downloadingId === selectedReceipt?.id ? "Generating PDF..." : "Download PDF Receipt"}
             </Button>
             <Button
               fullWidth

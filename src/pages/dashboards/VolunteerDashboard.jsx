@@ -5,6 +5,7 @@ import CountUp from "react-countup";
 import { pageVariants, pageTransition } from "../../constants/motionVariants";
 import { useAuth } from "../../hooks/useAuth";
 import SecurityPanel from "../../components/SecurityPanel";
+import IssuedCertificates from "../../components/IssuedCertificates";
 import { 
     getMyVolunteerApplications, 
     checkInVolunteer, 
@@ -417,47 +418,8 @@ const VolunteerDashboard = () => {
                                 </div>
                                 </ErrorBoundary>
 
-                                {/* Certificates portal */}
                                 <ErrorBoundary title="Service Certificates Portal" name="VolunteerCertificates">
-                                    <motion.div 
-                                        variants={itemVariants}
-                                        className="bg-gradient-to-br from-emerald-900 to-emerald-950 rounded-3xl p-8 text-white relative overflow-hidden shadow-xl"
-                                    >
-                                    <div className="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full blur-3xl -mr-32 -mt-32"></div>
-                                    <div className="relative z-10 grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
-                                        <div className="md:col-span-2 space-y-3">
-                                            <span className="text-xs font-black text-emerald-300 uppercase tracking-widest bg-emerald-800/60 px-3 py-1 rounded-full border border-emerald-700">
-                                                Roster Credentials
-                                            </span>
-                                            <h3 className="text-2xl sm:text-3xl font-black font-heading leading-tight">Official Volunteer Service Certificate</h3>
-                                            <p className="text-emerald-100/70 text-xs sm:text-sm max-w-xl leading-relaxed">
-                                                Download your certified digital document validating cumulative service hours, verified by the trust review board for academic, organizational, or corporate references.
-                                            </p>
-                                        </div>
-
-                                        <div className="bg-white/5 border border-white/10 rounded-2xl p-6 text-center backdrop-blur-md">
-                                            <span className="text-4xl mb-2 block">📜</span>
-                                            <h4 className="text-xs font-extrabold">Silver Tier Certificate</h4>
-                                            <p className="text-[10px] text-emerald-300/80 mt-0.5">Accredited at {hoursServed} hours</p>
-                                            
-                                            {approvedCount > 0 ? (
-                                                <button 
-                                                    onClick={() => alert(`Generating accredited service credentials package. Hours: ${hoursServed}...`)}
-                                                    className="mt-4 w-full py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-extrabold rounded-xl transition-all shadow-lg shadow-emerald-900/30"
-                                                >
-                                                    Download PDF Statement
-                                                </button>
-                                            ) : (
-                                                <button 
-                                                    disabled 
-                                                    className="mt-4 w-full py-2.5 bg-white/5 text-white/40 text-xs font-bold rounded-xl border border-white/5 cursor-not-allowed"
-                                                >
-                                                    Awaiting Approved Placement
-                                                </button>
-                                            )}
-                                        </div>
-                                    </div>
-                                </motion.div>
+                                    <IssuedCertificates type="VOLUNTEER" />
                                 </ErrorBoundary>
                             </motion.div>
                         ) : activeTab === "applications" ? (

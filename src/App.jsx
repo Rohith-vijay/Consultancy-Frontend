@@ -139,7 +139,7 @@ function AnimatedRoutes() {
           <Route
             path="/dashboard"
             element={
-              <ProtectedRoute allowedRoles={[ROLES.USER]}>
+              <ProtectedRoute allowedRoles={[ROLES.USER, ROLES.DONOR]}>
                 <ErrorBoundary title="Donor Portal Shield" name="UserDashboardRoot">
                   <UserDashboard />
                 </ErrorBoundary>

@@ -31,7 +31,7 @@ const faqs = [
   {
     category: "Volunteering",
     q: "Are volunteer roles certified?",
-    a: "Yes. Every campaign you volunteer in logs contribution hours. Upon completion, a Certificate of Service signed by our directors is downloadable instantly on your profile.",
+    a: "The trust administrator can issue a volunteer recognition certificate for your service. It appears in your volunteer account only after it has been issued, and you can download it as a PDF.",
   },
   {
     category: "General",

@@ -19,7 +19,7 @@ export const useAuth = () => {
     // Role convenience checks
     isAdmin: user?.role === ROLES.ADMIN,
     isVolunteer: user?.role === ROLES.VOLUNTEER,
-    isUser: user?.role === ROLES.USER,
+    isUser: user?.role === ROLES.USER || user?.role === ROLES.DONOR,
 
     // Generic role check
     hasRole: (role) => user?.role === role,

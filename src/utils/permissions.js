@@ -3,6 +3,7 @@
 export const ROLES = {
     ADMIN: "ADMIN",
     USER: "USER",
+    DONOR: "DONOR",
     VOLUNTEER: "VOLUNTEER",
     APPLICANT: "APPLICANT",
 };
@@ -23,8 +24,8 @@ export const FEATURES = {
 
 // Permission matrix — which roles can access which features
 const PERMISSION_MAP = {
-    [FEATURES.VIEW_EVENTS]: [ROLES.ADMIN, ROLES.USER, ROLES.VOLUNTEER, ROLES.APPLICANT],
-    [FEATURES.DONATE]: [ROLES.ADMIN, ROLES.USER, ROLES.VOLUNTEER, ROLES.APPLICANT],
+    [FEATURES.VIEW_EVENTS]: [ROLES.ADMIN, ROLES.USER, ROLES.DONOR, ROLES.VOLUNTEER, ROLES.APPLICANT],
+    [FEATURES.DONATE]: [ROLES.ADMIN, ROLES.USER, ROLES.DONOR, ROLES.VOLUNTEER, ROLES.APPLICANT],
     [FEATURES.APPLY_VOLUNTEER]: [ROLES.USER, ROLES.VOLUNTEER],
     [FEATURES.CREATE_EVENT]: [ROLES.ADMIN],
     [FEATURES.APPROVE_VOLUNTEER]: [ROLES.ADMIN],
@@ -62,6 +63,7 @@ export const getRoleLabel = (role) => {
         case ROLES.VOLUNTEER:
             return "Volunteer";
         case ROLES.USER:
+        case ROLES.DONOR:
             return "Donor";
         case ROLES.APPLICANT:
             return "Applicant";
@@ -80,6 +82,7 @@ export const getRoleBadgeClass = (role) => {
         case ROLES.VOLUNTEER:
             return "bg-green-100 text-green-800";
         case ROLES.USER:
+        case ROLES.DONOR:
             return "bg-blue-100 text-blue-800";
         case ROLES.APPLICANT:
             return "bg-purple-100 text-purple-800";
