@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 import ReplayIcon from "@mui/icons-material/Replay";
+import CertificateIssueButton from "../components/CertificateIssueButton";
 
 // ─── Status Badge Helper ─────────────────────────────────────────────────────
 const StatusBadge = ({ status }) => {
@@ -219,6 +220,10 @@ const DonationsPanel = ({
                         )}
                       </td>
                       <td className="py-4 px-5 text-right">
+                        <CertificateIssueButton type="DONOR" sourceId={don.id} name={don.donorName}
+                          activity={`INR ${Number(don.amount).toLocaleString("en-IN")}`}
+                          eligible={don.status === "SUCCESS" && Boolean(don.userId)}
+                          ineligibleReason={!don.userId ? "Requires a donation linked to a recipient account." : "Available for successful donations only."} />
                         {canRefund && (
                           <button
                             onClick={() => openRefundDialog(don)}

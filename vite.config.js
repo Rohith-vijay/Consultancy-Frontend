@@ -3,6 +3,8 @@ import react from '@vitejs/plugin-react'
 
 import { cloudflare } from "@cloudflare/vite-plugin";
 
+const backendTarget = process.env.VITE_BACKEND_TARGET || 'http://localhost:8080';
+
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), cloudflare()],
@@ -12,20 +14,25 @@ export default defineConfig({
   },
   server: {
     proxy: {
+      '/ws': {
+        target: backendTarget,
+        changeOrigin: true,
+        ws: true
+      },
       '/api': {
-        target: 'http://localhost:8080',
+        target: backendTarget,
         changeOrigin: true
       },
       '/uploads': {
-        target: 'http://localhost:8080',
+        target: backendTarget,
         changeOrigin: true
       },
       '/oauth2': {
-        target: 'http://localhost:8080',
+        target: backendTarget,
         changeOrigin: true
       },
       '/login/oauth2': {
-        target: 'http://localhost:8080',
+        target: backendTarget,
         changeOrigin: true
       }
     }

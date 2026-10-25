@@ -60,8 +60,8 @@ export const resolveMediaUrl = (url) => {
   if (url.startsWith('/uploads/') || url.startsWith('uploads/')) {
     let backendBase = getBackendUrl().replace(/\/api$/, '');
     if (!backendBase && typeof window !== "undefined") {
-      // Fallback: If backendBase is empty (because URL was relative /api), point to port 8080
-      backendBase = `http://${window.location.hostname}:8080`;
+      // Relative API URLs use the same-origin uploads proxy, including custom local backend ports.
+      backendBase = window.location.origin;
     }
     return `${backendBase}${url.startsWith('/') ? '' : '/'}${url}`;
   }

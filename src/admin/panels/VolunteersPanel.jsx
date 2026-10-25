@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import databaseService from "../../services/databaseService";
 import { motion, AnimatePresence } from "framer-motion";
 import { assignVolunteerRole, verifyVolunteerAttendance } from "../../services/messageService";
+import CertificateIssueButton from "../components/CertificateIssueButton";
 
 const VolunteersPanel = ({ volunteerApps, onApproveVolunteer, onRejectVolunteer, formatDate, EmptyState, onRefresh }) => {
 
@@ -158,6 +159,9 @@ const VolunteersPanel = ({ volunteerApps, onApproveVolunteer, onRejectVolunteer,
                   </div>
 
                   <div className="flex items-center space-x-2 flex-shrink-0 self-end sm:self-start pt-2 sm:pt-0">
+                    <CertificateIssueButton type="VOLUNTEER" sourceId={app.id} name={app.name || app.userFullName}
+                      activity={app.eventTitle || ""} eligible={app.status?.toUpperCase() === "APPROVED"}
+                      ineligibleReason="Approve the application before issuing a certificate." />
                     {app.status === "pending" || app.status === "PENDING" ? (
                       <>
                         <button

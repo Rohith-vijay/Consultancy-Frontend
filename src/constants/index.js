@@ -19,6 +19,7 @@ export const ROUTES = {
 export const ROLES = {
   ADMIN: "ADMIN",
   USER: "USER",
+  DONOR: "DONOR",
   VOLUNTEER: "VOLUNTEER",
 };
 
