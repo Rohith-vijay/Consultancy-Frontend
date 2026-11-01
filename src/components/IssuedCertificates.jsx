@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import certificateService from "../services/certificateService";
+import { formatCertificateDate } from "../utils/certificateDates";
 
 export default function IssuedCertificates({ type }) {
   const [certificates, setCertificates] = useState([]);
@@ -43,8 +44,8 @@ export default function IssuedCertificates({ type }) {
             <p className="text-xs uppercase tracking-wider font-bold text-amber-800">{certificate.type === "DONOR" ? "Donor appreciation" : "Volunteer recognition"}</p>
             <h3 className="text-xl font-semibold text-slate-900 mt-2">{certificate.recipientName}</h3>
             <p className="text-sm text-slate-600 mt-2 break-words">{certificate.details}</p>
-            {certificate.serviceFrom && <p className="text-sm text-slate-600 mt-1">Service: {certificate.serviceFrom} to {certificate.serviceTo}</p>}
-            <p className="text-xs text-slate-500 mt-3">Issued {new Date(certificate.issuedAt).toLocaleDateString("en-IN")}</p>
+            {certificate.serviceFrom && <p className="text-sm text-slate-600 mt-1">Service: <time dateTime={certificate.serviceFrom}>{formatCertificateDate(certificate.serviceFrom)}</time> to <time dateTime={certificate.serviceTo}>{formatCertificateDate(certificate.serviceTo)}</time></p>}
+            <p className="text-xs text-slate-500 mt-3">Issued <time dateTime={certificate.issuedAt}>{formatCertificateDate(certificate.issuedAt)}</time></p>
             <p className="text-xs font-mono text-slate-500 break-all mt-1">{certificate.certificateNumber}</p>
             <button onClick={() => download(certificate)} disabled={downloading === certificate.id} className="mt-4 rounded-xl bg-amber-800 text-white font-bold text-sm px-4 py-2 disabled:opacity-50">{downloading === certificate.id ? "Downloading..." : "Download certificate PDF"}</button>
           </article>

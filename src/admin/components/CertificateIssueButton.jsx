@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Alert, Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material";
 import certificateService from "../../services/certificateService";
-import { localDateInput } from "../../utils/certificateDates";
+import { localDateInput, formatCertificateDate } from "../../utils/certificateDates";
 
 export default function CertificateIssueButton({ type, sourceId, name, activity = "", eligible = true, ineligibleReason = "" }) {
   const [certificate, setCertificate] = useState(null);
@@ -54,7 +54,7 @@ export default function CertificateIssueButton({ type, sourceId, name, activity 
       className="rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-xs font-bold text-amber-900 hover:bg-amber-100 disabled:opacity-50">
       {checking ? "Checking certificate..." : busy ? "Please wait..." : certificate ? "Download issued certificate" : "Generate certificate"}
     </button>
-    {certificate && <p className="text-xs text-emerald-700 mt-1">Issued {new Date(certificate.issuedAt).toLocaleDateString("en-IN")}</p>}
+    {certificate && <p className="text-xs text-emerald-700 mt-1">Issued <time dateTime={certificate.issuedAt}>{formatCertificateDate(certificate.issuedAt)}</time></p>}
     {!certificate && !eligible && <p className="text-xs text-slate-500 mt-1 max-w-56">{ineligibleReason}</p>}
     {(statusError || (!open && error)) && <p role="alert" className="text-xs text-red-700 mt-1">{statusError || error}</p>}
     {statusError && <button type="button" onClick={() => setStatusRetry(value => value + 1)} disabled={checking}
