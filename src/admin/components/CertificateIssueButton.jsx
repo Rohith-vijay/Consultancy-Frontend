@@ -23,6 +23,13 @@ export default function CertificateIssueButton({ type, sourceId, name, activity 
       .finally(() => { if (active) setChecking(false); });
     return () => { active = false; };
   }, [type, sourceId, statusRetry]);
+  const openIssueDialog = () => {
+    setServiceActivity(activity);
+    setServiceFrom("");
+    setServiceTo("");
+    setError("");
+    setOpen(true);
+  };
   const generate = async (event) => {
     event.preventDefault(); setBusy(true); setError("");
     try {
@@ -42,7 +49,7 @@ export default function CertificateIssueButton({ type, sourceId, name, activity 
   return <div className="mt-2">
     <button type="button" disabled={checking || busy || (!certificate && (!eligible || Boolean(statusError)))}
       title={statusError || (!certificate && !eligible ? ineligibleReason : "")}
-      onClick={() => certificate ? download() : (setError(""), setOpen(true))}
+      onClick={() => certificate ? download() : openIssueDialog()}
       className="rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-xs font-bold text-amber-900 hover:bg-amber-100 disabled:opacity-50">
       {checking ? "Checking certificate..." : busy ? "Please wait..." : certificate ? "Download issued certificate" : "Generate certificate"}
     </button>
