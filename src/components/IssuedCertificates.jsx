@@ -23,6 +23,7 @@ export default function IssuedCertificates({ type }) {
     return () => { window.removeEventListener("focus", refresh); document.removeEventListener("visibilitychange", refresh); };
   }, [load]);
   const download = async (certificate) => {
+    if (downloading) return;
     setDownloading(certificate.id); setError("");
     try { await certificateService.download(certificate); }
     catch (err) { setError(err.message || "Unable to download this certificate. Please try again."); }
@@ -34,7 +35,7 @@ export default function IssuedCertificates({ type }) {
       <div className="flex justify-between items-start gap-4 mb-5">
         <div><h2 className="text-xl font-bold text-slate-900">Recognition certificates</h2>
           <p className="text-sm text-slate-600 mt-1">Certificates appear here only after the trust administrator issues them.</p></div>
-        <button onClick={load} disabled={loading} className="text-sm font-semibold text-amber-800 disabled:opacity-50">Refresh certificates</button>
+        <button onClick={load} disabled={loading || Boolean(downloading)} className="text-sm font-semibold text-amber-800 disabled:opacity-50">Refresh certificates</button>
       </div>
       {error && <p role="alert" className="mb-4 text-sm text-red-700">{error}</p>}
       {loading ? <p role="status" className="text-sm text-slate-600">Loading certificates...</p> : !visible.length ?
@@ -47,7 +48,7 @@ export default function IssuedCertificates({ type }) {
             {certificate.serviceFrom && <p className="text-sm text-slate-600 mt-1">Service: <time dateTime={certificate.serviceFrom}>{formatCertificateDate(certificate.serviceFrom)}</time> to <time dateTime={certificate.serviceTo}>{formatCertificateDate(certificate.serviceTo)}</time></p>}
             <p className="text-xs text-slate-500 mt-3">Issued <time dateTime={certificate.issuedAt}>{formatCertificateDate(certificate.issuedAt)}</time></p>
             <p className="text-xs font-mono text-slate-500 break-all mt-1">{certificate.certificateNumber}</p>
-            <button onClick={() => download(certificate)} disabled={downloading === certificate.id} className="mt-4 rounded-xl bg-amber-800 text-white font-bold text-sm px-4 py-2 disabled:opacity-50">{downloading === certificate.id ? "Downloading..." : "Download certificate PDF"}</button>
+            <button onClick={() => download(certificate)} disabled={Boolean(downloading)} className="mt-4 rounded-xl bg-amber-800 text-white font-bold text-sm px-4 py-2 disabled:opacity-50">{downloading === certificate.id ? "Downloading..." : "Download certificate PDF"}</button>
           </article>
         ))}</div>}
     </section>
