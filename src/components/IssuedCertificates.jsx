@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import certificateService from "../services/certificateService";
 import { formatCertificateDate } from "../utils/certificateDates";
 
@@ -7,20 +7,32 @@ export default function IssuedCertificates({ type }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [downloading, setDownloading] = useState(null);
+  const requestSequence = useRef(0);
   const load = useCallback(async () => {
+    const sequence = ++requestSequence.current;
     setLoading(true);
     setError("");
-    try { setCertificates(await certificateService.mine()); }
-    catch (err) { setError(err.message || "Unable to load certificates."); }
-    finally { setLoading(false); }
+    try {
+      const result = await certificateService.mine();
+      if (sequence === requestSequence.current) setCertificates(result);
+    } catch (err) {
+      if (sequence === requestSequence.current) setError(err.message || "Unable to load certificates.");
+    } finally {
+      if (sequence === requestSequence.current) setLoading(false);
+    }
   }, []);
   useEffect(() => {
+    const sequenceRef = requestSequence;
     load();
     // An award issued while this account is open appears when the user returns to the tab.
     const refresh = () => { if (document.visibilityState === "visible") load(); };
     window.addEventListener("focus", refresh);
     document.addEventListener("visibilitychange", refresh);
-    return () => { window.removeEventListener("focus", refresh); document.removeEventListener("visibilitychange", refresh); };
+    return () => {
+      sequenceRef.current++;
+      window.removeEventListener("focus", refresh);
+      document.removeEventListener("visibilitychange", refresh);
+    };
   }, [load]);
   const download = async (certificate) => {
     if (downloading) return;
