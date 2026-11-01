@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Alert, Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material";
 import certificateService from "../../services/certificateService";
+import { localDateInput } from "../../utils/certificateDates";
 
 export default function CertificateIssueButton({ type, sourceId, name, activity = "", eligible = true, ineligibleReason = "" }) {
   const [certificate, setCertificate] = useState(null);
@@ -45,7 +46,7 @@ export default function CertificateIssueButton({ type, sourceId, name, activity 
     catch { setError("Unable to download the certificate. Please try again."); }
     finally { setBusy(false); }
   };
-  const today = new Date().toLocaleDateString("en-CA");
+  const today = localDateInput();
   return <div className="mt-2">
     <button type="button" disabled={checking || busy || (!certificate && (!eligible || Boolean(statusError)))}
       title={statusError || (!certificate && !eligible ? ineligibleReason : "")}
