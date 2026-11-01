@@ -25,7 +25,7 @@ export default function IssuedCertificates({ type }) {
   const download = async (certificate) => {
     setDownloading(certificate.id); setError("");
     try { await certificateService.download(certificate); }
-    catch { setError("Unable to download this certificate. Please try again."); }
+    catch (err) { setError(err.message || "Unable to download this certificate. Please try again."); }
     finally { setDownloading(null); }
   };
   const visible = certificates.filter(certificate => !type || certificate.type === type);

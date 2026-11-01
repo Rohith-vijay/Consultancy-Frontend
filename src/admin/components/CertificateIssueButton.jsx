@@ -43,7 +43,7 @@ export default function CertificateIssueButton({ type, sourceId, name, activity 
   const download = async () => {
     setBusy(true); setError("");
     try { await certificateService.download(certificate); }
-    catch { setError("Unable to download the certificate. Please try again."); }
+    catch (err) { setError(err.message || "Unable to download the certificate. Please try again."); }
     finally { setBusy(false); }
   };
   const today = localDateInput();
