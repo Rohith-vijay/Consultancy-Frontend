@@ -11,12 +11,16 @@ const certificateService = {
     catch (error) { throw new Error(await certificateDownloadError(error), { cause: error }); }
     const url = URL.createObjectURL(response.data);
     const link = document.createElement("a");
-    link.href = url;
-    link.download = `${certificate.certificateNumber}.pdf`;
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-    setTimeout(() => URL.revokeObjectURL(url), 10000);
+    try {
+      link.href = url;
+      link.download = `${certificate.certificateNumber}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+    } finally {
+      // Release the temporary node and blob even if the browser blocks the download.
+      link.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 10000);
+    }
   },
 };
 
