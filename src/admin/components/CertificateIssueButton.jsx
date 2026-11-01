@@ -9,18 +9,20 @@ export default function CertificateIssueButton({ type, sourceId, name, activity 
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [statusError, setStatusError] = useState("");
+  const [statusRetry, setStatusRetry] = useState(0);
   const [serviceActivity, setServiceActivity] = useState(activity);
   const [serviceFrom, setServiceFrom] = useState("");
   const [serviceTo, setServiceTo] = useState("");
   useEffect(() => {
     let active = true;
     setChecking(true);
+    setStatusError("");
     setCertificate(null);
     certificateService.forSource(type, sourceId).then(value => { if (active) { setCertificate(value); setStatusError(""); } })
-      .catch(() => { if (active) setStatusError("Certificate status unavailable. Reopen this panel to retry."); })
+      .catch(() => { if (active) setStatusError("Certificate status unavailable. Please retry."); })
       .finally(() => { if (active) setChecking(false); });
     return () => { active = false; };
-  }, [type, sourceId]);
+  }, [type, sourceId, statusRetry]);
   const generate = async (event) => {
     event.preventDefault(); setBusy(true); setError("");
     try {
@@ -47,6 +49,8 @@ export default function CertificateIssueButton({ type, sourceId, name, activity 
     {certificate && <p className="text-xs text-emerald-700 mt-1">Issued {new Date(certificate.issuedAt).toLocaleDateString("en-IN")}</p>}
     {!certificate && !eligible && <p className="text-xs text-slate-500 mt-1 max-w-56">{ineligibleReason}</p>}
     {(statusError || (!open && error)) && <p role="alert" className="text-xs text-red-700 mt-1">{statusError || error}</p>}
+    {statusError && <button type="button" onClick={() => setStatusRetry(value => value + 1)} disabled={checking}
+      className="mt-1 text-xs font-semibold text-amber-900 underline">Retry certificate status</button>}
     <Dialog open={open} onClose={() => !busy && setOpen(false)} maxWidth="sm" fullWidth>
       <form onSubmit={generate}>
         <DialogTitle>Issue {type === "DONOR" ? "donor appreciation" : "volunteer recognition"} certificate</DialogTitle>
